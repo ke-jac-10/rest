@@ -1,4 +1,4 @@
-# 💶 Resto Perfetto
+#  Resto Perfetto
 
 Una piccola web app per allenarsi a dare il resto giusto, usando le vere monete e banconote in euro che si usano in Italia.
 
