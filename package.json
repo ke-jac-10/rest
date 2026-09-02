@@ -1,0 +1,9 @@
+{
+  "name": "resto-perfetto",
+  "private": true,
+  "type": "module",
+  "description": "Resto Perfetto - web app per allenarsi a dare il resto in euro, con account e classifica",
+  "dependencies": {
+    "@netlify/blobs": "^11.0.0"
+  }
+}

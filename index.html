@@ -121,6 +121,98 @@
   }
   .reset-link:hover{color:var(--cream);}
 
+  /* ---------- Account bar ---------- */
+  .account-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .account-btn{
+    border-radius:999px; padding:8px 14px; font-weight:600; font-size:0.82rem;
+    cursor:pointer; border:1px solid rgba(201,162,75,0.5); background:transparent;
+    color:var(--cream); touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  }
+  .account-btn:hover{border-color:var(--brass-bright); color:var(--brass-bright);}
+  .account-btn.filled{background:var(--brass); color:var(--wood-dark); border-color:transparent;}
+  .account-btn.filled:hover{color:var(--wood-dark); filter:brightness(1.08);}
+  .account-who{
+    font-size:0.85rem; color:var(--muted); display:flex; align-items:center; gap:6px;
+  }
+  .account-who strong{color:var(--brass-bright); font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- Modal (login/register) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(15,10,6,0.72);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px; z-index:50;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal{
+    position:relative;
+    background:var(--paper); color:var(--ink);
+    border-radius:14px; padding:26px 24px;
+    max-width:360px; width:100%;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+    animation:slideIn 0.25s ease-out;
+  }
+  .modal-close{
+    position:absolute; top:12px; right:12px;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(0,0,0,0.08); border:none; color:var(--ink-soft);
+    font-size:1.1rem; line-height:1; cursor:pointer; touch-action:manipulation;
+  }
+  .modal-close:hover{background:rgba(0,0,0,0.15); color:var(--ink);}
+  .auth-tabs{display:flex; gap:6px; margin-bottom:16px; background:var(--paper-dim); border-radius:999px; padding:4px;}
+  .auth-tab{
+    flex:1; border:none; background:transparent; border-radius:999px; padding:8px 10px;
+    font-weight:600; font-size:0.85rem; color:var(--ink-soft); cursor:pointer; touch-action:manipulation;
+  }
+  .auth-tab.active{background:var(--wood); color:var(--cream);}
+  .auth-title{font-size:1.3rem; color:var(--ink); font-weight:700;}
+  .auth-sub{color:var(--ink-soft); font-size:0.85rem; margin-top:4px; margin-bottom:18px; line-height:1.4;}
+  #auth-form{display:flex; flex-direction:column; gap:14px;}
+  .field{display:flex; flex-direction:column; gap:6px; font-size:0.82rem; color:var(--ink-soft); font-weight:600;}
+  .field input{
+    font-family:'IBM Plex Sans', sans-serif; font-size:0.95rem; color:var(--ink);
+    background:#fff; border:1px solid var(--paper-dim); border-radius:8px; padding:10px 12px;
+  }
+  .field input:focus-visible{outline:2px solid var(--brass); outline-offset:1px;}
+  .auth-error{
+    color:var(--bad-deep); background:rgba(224,112,90,0.12); border:1px solid rgba(224,112,90,0.4);
+    border-radius:8px; padding:8px 10px; font-size:0.82rem;
+  }
+  .auth-error[hidden]{display:none;}
+  #auth-form .btn.primary{width:100%;}
+
+  /* ---------- Profile & leaderboard panel ---------- */
+  .profile-panel{
+    background:var(--wood); border:1px solid rgba(201,162,75,0.35);
+    border-radius:var(--radius-lg); padding:20px 22px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  }
+  .profile-panel[hidden]{display:none;}
+  .profile-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .profile-head h2{font-size:1.15rem; color:var(--cream); font-weight:600;}
+  .profile-head .modal-close{position:static; background:rgba(255,255,255,0.08); color:var(--muted);}
+  .profile-head .modal-close:hover{background:rgba(255,255,255,0.16); color:var(--cream);}
+  .profile-invite{color:var(--muted); font-size:0.88rem; line-height:1.5; margin-bottom:8px;}
+  .badge-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px; margin:14px 0 20px;}
+  .badge{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(0,0,0,0.2); border-radius:var(--radius-md); padding:10px 12px;
+    font-size:0.82rem; color:var(--cream);
+  }
+  .badge.locked{opacity:0.35;}
+  .badge .badge-icon{font-size:1.4rem;}
+  .leaderboard-title{font-size:0.95rem; color:var(--cream); font-weight:600; margin-bottom:10px;}
+  .leaderboard-list{display:flex; flex-direction:column; gap:6px;}
+  .leaderboard-row{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(0,0,0,0.18); border-radius:var(--radius-sm); padding:8px 12px;
+    font-size:0.88rem;
+  }
+  .leaderboard-row.me{background:rgba(201,162,75,0.18); border:1px solid rgba(201,162,75,0.4);}
+  .leaderboard-rank{font-family:'IBM Plex Mono',monospace; color:var(--brass-bright); font-weight:700; width:1.6em;}
+  .leaderboard-name{flex:1; color:var(--cream); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .leaderboard-score{font-family:'IBM Plex Mono',monospace; color:var(--muted);}
+
+  /* ---------- Layout ---------- */
   .counter{
     display:grid;
     grid-template-columns:minmax(260px,360px) 1fr;
@@ -131,6 +223,7 @@
     .counter{grid-template-columns:1fr;}
   }
 
+  /* ---------- Ticket (customer scene) ---------- */
   .ticket{
     position:relative;
     background:var(--paper);
@@ -183,6 +276,7 @@
   .paid-note-row{display:flex; align-items:center; gap:10px;}
   .prankster-note{font-size:0.76rem; font-style:italic; color:var(--ink-soft); margin-top:6px;}
 
+  /* ---------- Chips (banknotes & coins) ---------- */
   .chip{
     border:none; cursor:pointer; color:#fff;
     font-family:'IBM Plex Mono', monospace; font-weight:700;
@@ -209,6 +303,7 @@
 
   button.chip{padding:0;}
 
+  /* ---------- Drawer (till) ---------- */
   .drawer{
     background:linear-gradient(180deg, var(--wood-light), var(--wood));
     border:1px solid rgba(201,162,75,0.35);
@@ -232,6 +327,7 @@
   }
   .drawer-row:last-child{margin-bottom:0;}
 
+  /* ---------- Tray ---------- */
   .tray-panel{
     background:var(--wood);
     border:1px solid rgba(201,162,75,0.35);
@@ -293,6 +389,7 @@
   .btn:disabled{opacity:0.4; cursor:not-allowed; filter:none; transform:none;}
   .btn.next{background:var(--felt); color:var(--cream); border-color:rgba(201,162,75,0.4);}
 
+  /* ---------- Feedback ---------- */
   .feedback{
     grid-column:1 / -1;
     background:var(--wood);
@@ -339,6 +436,7 @@
   .compare-col h3{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:600; margin-bottom:6px;}
   .compare-col p{font-family:'IBM Plex Mono',monospace; font-size:0.9rem; color:var(--cream); line-height:1.6;}
 
+  /* ---------- Footer ---------- */
   .footnote{
     color:var(--muted); font-size:0.82rem; line-height:1.6;
     border-top:1px solid rgba(201,162,75,0.25); padding-top:16px;
@@ -376,6 +474,7 @@
         <div><dt>Record</dt><dd id="stat-best">0</dd></div>
         <div><dt>Punti</dt><dd id="stat-score">0</dd></div>
       </dl>
+      <div class="account-bar" id="account-bar"></div>
       <button class="reset-link" id="reset-btn" type="button">Azzera</button>
     </div>
   </header>
@@ -413,6 +512,40 @@
     <section class="feedback" id="feedback" hidden></section>
   </main>
 
+  <section class="profile-panel" id="profile-panel" hidden>
+    <div class="profile-head">
+      <h2>Profilo e classifica</h2>
+      <button class="modal-close" id="profile-close" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <div id="profile-body"></div>
+    <h3 class="leaderboard-title">🏆 Classifica</h3>
+    <div class="leaderboard-list" id="leaderboard-list"><p class="tray-empty">Caricamento…</p></div>
+  </section>
+
+  <div class="modal-overlay" id="auth-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="modal-close" id="auth-close" type="button" aria-label="Chiudi">×</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" type="button" data-mode="login">Accedi</button>
+        <button class="auth-tab" id="tab-register" type="button" data-mode="register">Registrati</button>
+      </div>
+      <h2 class="auth-title" id="auth-title">Accedi</h2>
+      <p class="auth-sub" id="auth-sub">Salva il tuo punteggio e ritrovalo su ogni dispositivo.</p>
+      <form id="auth-form">
+        <label class="field">
+          <span>Nome utente</span>
+          <input type="text" id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="20" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" id="auth-password" name="password" autocomplete="current-password" minlength="6" maxlength="128" required>
+        </label>
+        <p class="auth-error" id="auth-error" hidden></p>
+        <button class="btn primary" type="submit" id="auth-submit">Accedi</button>
+      </form>
+    </div>
+  </div>
+
   <footer class="footnote">
     💡 <strong style="color:var(--cream);">Lo sapevi?</strong> Dal 2018, in Italia, i pagamenti in contanti si arrotondano per legge al 5 centesimo più vicino: per questo, in questo gioco, ogni prezzo — e ogni resto — è sempre un multiplo di 5 centesimi, proprio come alla cassa vera. Le monete da 1 e 2 centesimi restano a corso legale, ma di fatto non servono quasi più.
   </footer>
@@ -422,6 +555,7 @@
 (function(){
   "use strict";
 
+  // ---------- Data ----------
   var DENOMS = [
     {v:10000, type:'note', big:'100', unit:'€', size:96, bg:'var(--note100)', word:'banconota da cento euro'},
     {v:5000,  type:'note', big:'50',  unit:'€', size:90, bg:'var(--note50)',  word:'banconota da cinquanta euro'},
@@ -436,6 +570,20 @@
     {v:5,     type:'coin', big:'5',   unit:'c', size:32, bg:'var(--copper)', word:'moneta da cinque centesimi'}
   ];
   function findDenom(v){ for (var i=0;i<DENOMS.length;i++){ if (DENOMS[i].v===v) return DENOMS[i]; } return null; }
+
+  var API = '/api';
+  var AUTH_KEY = 'restoPerfetto_auth_v1';
+
+  var BADGES = [
+    { id:'first', icon:'🥉', label:'Primo resto perfetto', test:function(s){ return s.perfect >= 1; } },
+    { id:'streak5', icon:'🔥', label:'5 di fila', test:function(s){ return s.bestStreak >= 5; } },
+    { id:'streak10', icon:'⚡', label:'10 di fila', test:function(s){ return s.bestStreak >= 10; } },
+    { id:'streak20', icon:'👑', label:'20 di fila', test:function(s){ return s.bestStreak >= 20; } },
+    { id:'served50', icon:'🧑‍💼', label:'50 clienti serviti', test:function(s){ return s.served >= 50; } },
+    { id:'served200', icon:'🏅', label:'200 clienti serviti', test:function(s){ return s.served >= 200; } },
+    { id:'score500', icon:'💰', label:'500 punti', test:function(s){ return s.score >= 500; } },
+    { id:'score2000', icon:'💎', label:'2000 punti', test:function(s){ return s.score >= 2000; } }
+  ];
 
   var AVATARS = ['👨','👩','🧑','👴','👵','🧔','🧑‍🦱','🧑‍🦰','🧓','👨‍🦳','👩‍🦳','🧕','👨‍💼','👩‍💼','🧑‍🎨','👨‍🌾','👩🏻','👨🏽','🧑🏿','👩🏾‍🦰','👨🏻‍🦲','👵🏽','👴🏿','🧑🏻‍🦱'];
   var NAMES = ['Marco','Giulia','Luca','Francesca','Andrea','Chiara','Matteo','Sara','Davide','Elena',
@@ -465,6 +613,7 @@
     'Prendo {item}: {price}, giusto?'
   ];
 
+  // ---------- Helpers ----------
   function rand(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
   function pick(arr){ return arr[rand(0, arr.length - 1)]; }
   function roundTo5(v){ return Math.round(v / 5) * 5; }
@@ -474,6 +623,11 @@
     var intPart = Math.floor(abs / 100);
     var decPart = String(abs % 100).padStart(2, '0');
     return sign + intPart + ',' + decPart + ' €';
+  }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(c){
+      return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c];
+    });
   }
 
   function randomPriceCents(){
@@ -530,7 +684,8 @@
     return list.map(function(o){ return o.count + '× ' + denomLabel(o.denom); }).join(' + ');
   }
   function denomLabel(d){ return d.big + ' ' + d.unit; }
--
+
+  // ---------- Chip rendering ----------
   function chipStyleAttr(d){
     if (d.special === 'coin1'){
       return 'background:radial-gradient(circle at 50% 45%, var(--silver) 0 52%, var(--gold) 53% 100%); color:var(--ink);';
@@ -566,12 +721,14 @@
     return '<span class="mini-chip ' + shapeClass + '" style="' + chipStyleAttr(d) + '"></span>';
   }
 
+  // ---------- State ----------
   var state = {
     customer: null,
     tray: {},
     served: 0, perfect: 0, okay: 0, wrong: 0, assisted: 0,
     streak: 0, bestStreak: 0, score: 0,
-    resolved: false
+    resolved: false,
+    auth: { token: null, username: null }
   };
 
   function loadProgress(){
@@ -594,6 +751,47 @@
     } catch(e){ /* ignore */ }
   }
 
+  function loadAuth(){
+    try {
+      var raw = localStorage.getItem(AUTH_KEY);
+      if (raw){
+        var d = JSON.parse(raw);
+        if (d && d.token && d.username){
+          state.auth.token = d.token;
+          state.auth.username = d.username;
+        }
+      }
+    } catch(e){ /* ignore */ }
+  }
+  function saveAuthStorage(){
+    try {
+      if (state.auth.token){
+        localStorage.setItem(AUTH_KEY, JSON.stringify({ token: state.auth.token, username: state.auth.username }));
+      } else {
+        localStorage.removeItem(AUTH_KEY);
+      }
+    } catch(e){ /* ignore */ }
+  }
+
+  function currentStatsPayload(){
+    return {
+      score: state.score, served: state.served, perfect: state.perfect,
+      okay: state.okay, wrong: state.wrong, streak: state.streak, bestStreak: state.bestStreak
+    };
+  }
+  function applyServerStats(stats){
+    if (!stats) return;
+    state.score = stats.score || 0;
+    state.served = stats.served || 0;
+    state.perfect = stats.perfect || 0;
+    state.okay = stats.okay || 0;
+    state.wrong = stats.wrong || 0;
+    state.streak = stats.streak || 0;
+    state.bestStreak = stats.bestStreak || 0;
+    renderStats();
+  }
+
+  // ---------- Customer generation ----------
   function newCustomer(){
     var priceCents = randomPriceCents();
     var tier = tierForPrice(priceCents);
@@ -641,6 +839,7 @@
     document.getElementById('ticket').innerHTML = html;
   }
 
+  // ---------- Till ----------
   function renderTill(){
     var notesRow = document.getElementById('notes-row');
     var coinsRow = document.getElementById('coins-row');
@@ -661,6 +860,7 @@
     addToTray(v);
   }
 
+  // ---------- Tray ----------
   function addToTray(v){
     state.tray[v] = (state.tray[v] || 0) + 1;
     renderTray();
@@ -717,6 +917,7 @@
     document.getElementById('tray-total-value').textContent = euro(trayTotal());
   }
 
+  // ---------- Stats ----------
   function renderStats(){
     document.getElementById('stat-served').textContent = state.served;
     document.getElementById('stat-perfect').textContent = state.perfect;
@@ -725,6 +926,179 @@
     document.getElementById('stat-score').textContent = state.score;
   }
 
+  // ---------- Account: network ----------
+  function fetchMe(){
+    if (!state.auth.token) return;
+    fetch(API + '/me', { headers: { 'Authorization': 'Bearer ' + state.auth.token } })
+      .then(function(r){
+        if (r.status === 401) { doLogout(true); return null; }
+        return r.ok ? r.json() : null;
+      })
+      .then(function(d){ if (d) applyServerStats(d.stats); renderAccountBar(); })
+      .catch(function(){ renderAccountBar(); /* offline: tieni i dati locali */ });
+  }
+  function pushSync(reset, explicitStats){
+    if (!state.auth.token) return;
+    var payloadStats = explicitStats || currentStatsPayload();
+    fetch(API + '/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + state.auth.token },
+      body: JSON.stringify({ stats: payloadStats, reset: !!reset })
+    })
+      .then(function(r){
+        if (r.status === 401) { doLogout(true); return null; }
+        return r.ok ? r.json() : null;
+      })
+      .then(function(d){ if (d && d.stats) applyServerStats(d.stats); })
+      .catch(function(){ /* offline o account non disponibile su questa pagina: resta locale */ });
+  }
+  function onAuthSuccess(data){
+    var guestStats = currentStatsPayload(); // progresso fatto come ospite su questo dispositivo, da conservare
+    state.auth.token = data.token;
+    state.auth.username = data.username;
+    saveAuthStorage();
+    applyServerStats(data.stats);
+    closeAuthModal();
+    renderAccountBar();
+    pushSync(false, guestStats); // il server tiene il massimo tra i due, così non si perde nulla
+  }
+  function doLogout(silent){
+    state.auth.token = null;
+    state.auth.username = null;
+    saveAuthStorage();
+    renderAccountBar();
+    if (!silent){
+      state.served = 0; state.perfect = 0; state.okay = 0; state.wrong = 0; state.assisted = 0;
+      state.streak = 0; state.bestStreak = 0; state.score = 0;
+      loadProgress();
+      renderStats();
+    }
+  }
+
+  // ---------- Account: UI ----------
+  function renderAccountBar(){
+    var bar = document.getElementById('account-bar');
+    if (state.auth.token){
+      bar.innerHTML =
+        '<span class="account-who">👤 <strong>' + escapeHtml(state.auth.username) + '</strong></span>' +
+        '<button class="account-btn" id="profile-btn" type="button">🏆 Classifica</button>' +
+        '<button class="account-btn" id="logout-btn" type="button">Esci</button>';
+      document.getElementById('logout-btn').addEventListener('click', function(){ doLogout(false); });
+    } else {
+      bar.innerHTML =
+        '<button class="account-btn" id="profile-btn" type="button">🏆 Classifica</button>' +
+        '<button class="account-btn filled" id="login-open-btn" type="button">Accedi</button>';
+      document.getElementById('login-open-btn').addEventListener('click', function(){ openAuthModal('login'); });
+    }
+    document.getElementById('profile-btn').addEventListener('click', openProfilePanel);
+  }
+
+  function switchAuthMode(mode){
+    var isLogin = mode === 'login';
+    document.getElementById('tab-login').classList.toggle('active', isLogin);
+    document.getElementById('tab-register').classList.toggle('active', !isLogin);
+    document.getElementById('auth-title').textContent = isLogin ? 'Accedi' : 'Registrati';
+    document.getElementById('auth-sub').textContent = isLogin
+      ? 'Bentornato: inserisci le tue credenziali.'
+      : 'Crea un account per salvare il punteggio e ritrovarlo su ogni dispositivo.';
+    document.getElementById('auth-submit').textContent = isLogin ? 'Accedi' : 'Crea account';
+    document.getElementById('auth-password').setAttribute('autocomplete', isLogin ? 'current-password' : 'new-password');
+    document.getElementById('auth-form').setAttribute('data-mode', mode);
+    document.getElementById('auth-error').hidden = true;
+  }
+  function openAuthModal(mode){
+    switchAuthMode(mode || 'login');
+    document.getElementById('auth-overlay').hidden = false;
+    document.getElementById('auth-username').focus();
+  }
+  function closeAuthModal(){
+    document.getElementById('auth-overlay').hidden = true;
+    document.getElementById('auth-form').reset();
+    document.getElementById('auth-error').hidden = true;
+  }
+  function onAuthSubmit(e){
+    e.preventDefault();
+    var mode = document.getElementById('auth-form').getAttribute('data-mode') || 'login';
+    var username = document.getElementById('auth-username').value.trim();
+    var password = document.getElementById('auth-password').value;
+    var errorEl = document.getElementById('auth-error');
+    var submitBtn = document.getElementById('auth-submit');
+    errorEl.hidden = true;
+    submitBtn.disabled = true;
+    fetch(API + '/' + mode, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
+    })
+      .then(function(r){ return r.json().then(function(body){ return { ok: r.ok, body: body }; }); })
+      .then(function(res){
+        submitBtn.disabled = false;
+        if (!res.ok){
+          errorEl.textContent = (res.body && res.body.error) || 'Qualcosa è andato storto, riprova.';
+          errorEl.hidden = false;
+          return;
+        }
+        onAuthSuccess(res.body);
+      })
+      .catch(function(){
+        submitBtn.disabled = false;
+        errorEl.textContent = 'Account non disponibile su questa pagina (serve la versione online del sito).';
+        errorEl.hidden = false;
+      });
+  }
+
+  function renderProfile(){
+    var body = document.getElementById('profile-body');
+    if (!state.auth.token){
+      body.innerHTML = '<p class="profile-invite">Accedi per sbloccare e salvare i tuoi traguardi su ogni dispositivo.</p>';
+      return;
+    }
+    var stats = currentStatsPayload();
+    var html = '<div class="badge-grid">';
+    BADGES.forEach(function(b){
+      var unlocked = b.test(stats);
+      html += '<div class="badge' + (unlocked ? '' : ' locked') + '">' +
+        '<span class="badge-icon">' + b.icon + '</span><span>' + b.label + '</span></div>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+  }
+  function fetchLeaderboard(){
+    var el = document.getElementById('leaderboard-list');
+    fetch(API + '/leaderboard')
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if (!d || !d.leaderboard || !d.leaderboard.length){
+          el.innerHTML = '<p class="tray-empty">Ancora nessun punteggio in classifica: sii il primo!</p>';
+          return;
+        }
+        var html = '';
+        d.leaderboard.forEach(function(row, i){
+          var isMe = state.auth.username && row.username.toLowerCase() === state.auth.username.toLowerCase();
+          html += '<div class="leaderboard-row' + (isMe ? ' me' : '') + '">' +
+            '<span class="leaderboard-rank">#' + (i + 1) + '</span>' +
+            '<span class="leaderboard-name">' + escapeHtml(row.username) + '</span>' +
+            '<span class="leaderboard-score num">' + row.score + ' pt</span>' +
+            '</div>';
+        });
+        el.innerHTML = html;
+      })
+      .catch(function(){
+        el.innerHTML = '<p class="tray-empty">Classifica non disponibile su questa pagina (serve la versione online del sito).</p>';
+      });
+  }
+  function openProfilePanel(){
+    renderProfile();
+    document.getElementById('profile-panel').hidden = false;
+    document.getElementById('leaderboard-list').innerHTML = '<p class="tray-empty">Caricamento…</p>';
+    fetchLeaderboard();
+    document.getElementById('profile-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function closeProfilePanel(){
+    document.getElementById('profile-panel').hidden = true;
+  }
+
+  // ---------- Submit / Reveal ----------
   function submit(){
     if (!state.customer || state.resolved) return;
     var target = state.customer.paymentCents - state.customer.priceCents;
@@ -748,6 +1122,7 @@
     }
     state.score += points;
     saveProgress();
+    pushSync();
     renderFeedback(type, { target: target, given: given, optimal: optimal, optimalPieces: optimalPieces, yours: yours, givenPieces: givenPieces, points: points });
     renderStats();
     document.getElementById('confirm-btn').disabled = true;
@@ -765,6 +1140,7 @@
     state.streak = 0;
     state.resolved = true;
     saveProgress();
+    pushSync();
     renderFeedback('assisted', { target: target, optimal: optimal, optimalPieces: optimalPieces });
     renderStats();
     document.getElementById('confirm-btn').disabled = true;
@@ -822,8 +1198,10 @@
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
+  // ---------- Wire up static controls ----------
   function init(){
     loadProgress();
+    loadAuth();
     renderTill();
     document.getElementById('clear-btn').addEventListener('click', function(){
       if (!state.resolved) clearTray();
@@ -834,8 +1212,25 @@
       state.served = 0; state.perfect = 0; state.okay = 0; state.wrong = 0; state.assisted = 0;
       state.streak = 0; state.bestStreak = 0; state.score = 0;
       saveProgress();
+      if (state.auth.token) pushSync(true);
       renderStats();
     });
+
+    // account modal
+    document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+    document.getElementById('auth-overlay').addEventListener('click', function(e){
+      if (e.target.id === 'auth-overlay') closeAuthModal();
+    });
+    document.getElementById('tab-login').addEventListener('click', function(){ switchAuthMode('login'); });
+    document.getElementById('tab-register').addEventListener('click', function(){ switchAuthMode('register'); });
+    document.getElementById('auth-form').addEventListener('submit', onAuthSubmit);
+
+    // profile panel
+    document.getElementById('profile-close').addEventListener('click', closeProfilePanel);
+
+    renderAccountBar();
+    if (state.auth.token) fetchMe();
+
     newCustomer();
     renderStats();
   }
