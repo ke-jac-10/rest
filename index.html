@@ -121,7 +121,6 @@
   }
   .reset-link:hover{color:var(--cream);}
 
-  /* ---------- Layout ---------- */
   .counter{
     display:grid;
     grid-template-columns:minmax(260px,360px) 1fr;
@@ -132,7 +131,6 @@
     .counter{grid-template-columns:1fr;}
   }
 
-  /* ---------- Ticket (customer scene) ---------- */
   .ticket{
     position:relative;
     background:var(--paper);
@@ -185,7 +183,6 @@
   .paid-note-row{display:flex; align-items:center; gap:10px;}
   .prankster-note{font-size:0.76rem; font-style:italic; color:var(--ink-soft); margin-top:6px;}
 
-  /* ---------- Chips (banknotes & coins) ---------- */
   .chip{
     border:none; cursor:pointer; color:#fff;
     font-family:'IBM Plex Mono', monospace; font-weight:700;
@@ -212,7 +209,6 @@
 
   button.chip{padding:0;}
 
-  /* ---------- Drawer (till) ---------- */
   .drawer{
     background:linear-gradient(180deg, var(--wood-light), var(--wood));
     border:1px solid rgba(201,162,75,0.35);
@@ -236,7 +232,6 @@
   }
   .drawer-row:last-child{margin-bottom:0;}
 
-  /* ---------- Tray ---------- */
   .tray-panel{
     background:var(--wood);
     border:1px solid rgba(201,162,75,0.35);
@@ -298,7 +293,6 @@
   .btn:disabled{opacity:0.4; cursor:not-allowed; filter:none; transform:none;}
   .btn.next{background:var(--felt); color:var(--cream); border-color:rgba(201,162,75,0.4);}
 
-  /* ---------- Feedback ---------- */
   .feedback{
     grid-column:1 / -1;
     background:var(--wood);
@@ -345,7 +339,6 @@
   .compare-col h3{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:600; margin-bottom:6px;}
   .compare-col p{font-family:'IBM Plex Mono',monospace; font-size:0.9rem; color:var(--cream); line-height:1.6;}
 
-  /* ---------- Footer ---------- */
   .footnote{
     color:var(--muted); font-size:0.82rem; line-height:1.6;
     border-top:1px solid rgba(201,162,75,0.25); padding-top:16px;
@@ -429,7 +422,6 @@
 (function(){
   "use strict";
 
-  // ---------- Data ----------
   var DENOMS = [
     {v:10000, type:'note', big:'100', unit:'€', size:96, bg:'var(--note100)', word:'banconota da cento euro'},
     {v:5000,  type:'note', big:'50',  unit:'€', size:90, bg:'var(--note50)',  word:'banconota da cinquanta euro'},
@@ -473,7 +465,6 @@
     'Prendo {item}: {price}, giusto?'
   ];
 
-  // ---------- Helpers ----------
   function rand(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
   function pick(arr){ return arr[rand(0, arr.length - 1)]; }
   function roundTo5(v){ return Math.round(v / 5) * 5; }
@@ -539,8 +530,7 @@
     return list.map(function(o){ return o.count + '× ' + denomLabel(o.denom); }).join(' + ');
   }
   function denomLabel(d){ return d.big + ' ' + d.unit; }
-
-  // ---------- Chip rendering ----------
+-
   function chipStyleAttr(d){
     if (d.special === 'coin1'){
       return 'background:radial-gradient(circle at 50% 45%, var(--silver) 0 52%, var(--gold) 53% 100%); color:var(--ink);';
@@ -576,7 +566,6 @@
     return '<span class="mini-chip ' + shapeClass + '" style="' + chipStyleAttr(d) + '"></span>';
   }
 
-  // ---------- State ----------
   var state = {
     customer: null,
     tray: {},
@@ -605,7 +594,6 @@
     } catch(e){ /* ignore */ }
   }
 
-  // ---------- Customer generation ----------
   function newCustomer(){
     var priceCents = randomPriceCents();
     var tier = tierForPrice(priceCents);
@@ -653,7 +641,6 @@
     document.getElementById('ticket').innerHTML = html;
   }
 
-  // ---------- Till ----------
   function renderTill(){
     var notesRow = document.getElementById('notes-row');
     var coinsRow = document.getElementById('coins-row');
@@ -674,7 +661,6 @@
     addToTray(v);
   }
 
-  // ---------- Tray ----------
   function addToTray(v){
     state.tray[v] = (state.tray[v] || 0) + 1;
     renderTray();
@@ -731,7 +717,6 @@
     document.getElementById('tray-total-value').textContent = euro(trayTotal());
   }
 
-  // ---------- Stats ----------
   function renderStats(){
     document.getElementById('stat-served').textContent = state.served;
     document.getElementById('stat-perfect').textContent = state.perfect;
@@ -740,7 +725,6 @@
     document.getElementById('stat-score').textContent = state.score;
   }
 
-  // ---------- Submit / Reveal ----------
   function submit(){
     if (!state.customer || state.resolved) return;
     var target = state.customer.paymentCents - state.customer.priceCents;
@@ -838,7 +822,6 @@
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // ---------- Wire up static controls ----------
   function init(){
     loadProgress();
     renderTill();
