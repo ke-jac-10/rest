@@ -1,0 +1,832 @@
+<title>Resto Perfetto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --wood-dark:#241811;
+    --wood:#3c2a1c;
+    --wood-light:#513723;
+    --felt:#1d4a37;
+    --felt-deep:#153a2a;
+    --brass:#c9a24b;
+    --brass-bright:#e6c777;
+    --paper:#f6efdf;
+    --paper-dim:#ece0c5;
+    --ink:#2a1f14;
+    --ink-soft:#6b5843;
+    --cream:#f3ead9;
+    --muted:#c9b795;
+    --ok:#5fb87a;
+    --ok-deep:#2f6b43;
+    --warn:#e0b23f;
+    --warn-deep:#8a6414;
+    --bad:#e0705a;
+    --bad-deep:#8a3223;
+    --note100:#3f7a52;
+    --note50:#c17a2e;
+    --note20:#34608a;
+    --note10:#a13d3d;
+    --note5:#93897a;
+    --gold:#c9a24b;
+    --copper:#a8703f;
+    --silver:#cfd3d6;
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    font-size:16px;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:
+      radial-gradient(ellipse at top, rgba(255,255,255,0.04), transparent 60%),
+      repeating-linear-gradient(100deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 5px),
+      var(--wood-dark);
+    color:var(--cream);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces', Georgia, serif; margin:0; text-wrap:balance;}
+  p{margin:0;}
+  button{font-family:inherit;}
+  button:focus-visible, .chip:focus-visible{
+    outline:2px solid var(--brass-bright);
+    outline-offset:2px;
+  }
+  .num{font-family:'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+
+  .stage{
+    max-width:1080px;
+    margin:0 auto;
+    padding:28px 20px 48px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+
+  /* ---------- Header ---------- */
+  .masthead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    flex-wrap:wrap;
+    border-bottom:2px solid rgba(201,162,75,0.35);
+    padding-bottom:18px;
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand-mark{
+    width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--brass-bright), var(--brass) 55%, #8a6a2e 100%);
+    color:var(--wood-dark);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:28px;
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.4);
+    flex-shrink:0;
+  }
+  .masthead h1{font-size:clamp(1.6rem, 2.6vw, 2.1rem); color:var(--cream); font-weight:700; letter-spacing:0.01em;}
+  .tagline{color:var(--muted); font-size:0.92rem; max-width:46ch; margin-top:4px;}
+
+  .stats{
+    display:flex;
+    gap:0;
+    background:rgba(0,0,0,0.22);
+    border:1px solid rgba(201,162,75,0.3);
+    border-radius:var(--radius-md);
+    overflow-x:auto;
+    max-width:100%;
+  }
+  .stats div{
+    padding:8px 14px;
+    text-align:center;
+    border-right:1px solid rgba(201,162,75,0.2);
+    min-width:56px;
+    flex-shrink:0;
+  }
+  @media (max-width:420px){
+    .stats div{padding:7px 10px; min-width:48px;}
+    .stats dd{font-size:1rem;}
+  }
+  .stats div:last-child{border-right:none;}
+  .stats dt{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);}
+  .stats dd{margin:2px 0 0; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:1.15rem; color:var(--brass-bright);}
+  .reset-link{
+    align-self:center;
+    background:none; border:none; color:var(--muted); text-decoration:underline;
+    font-size:0.78rem; cursor:pointer; padding:4px;
+  }
+  .reset-link:hover{color:var(--cream);}
+
+  /* ---------- Layout ---------- */
+  .counter{
+    display:grid;
+    grid-template-columns:minmax(260px,360px) 1fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .counter{grid-template-columns:1fr;}
+  }
+
+  /* ---------- Ticket (customer scene) ---------- */
+  .ticket{
+    position:relative;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:6px 6px 0 0;
+    padding:22px 22px 28px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+    font-family:'IBM Plex Mono', monospace;
+    animation:slideIn 0.35s ease-out;
+  }
+  .ticket::after{
+    content:'';
+    position:absolute; left:0; right:0; bottom:-9px; height:18px;
+    background:
+      linear-gradient(135deg, var(--paper) 50%, transparent 50%),
+      linear-gradient(45deg, var(--paper) 50%, transparent 50%);
+    background-size:14px 18px;
+    background-position:0 0, 7px 0;
+    background-repeat:repeat-x;
+  }
+  .ticket-head{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .avatar{
+    width:52px; height:52px; border-radius:50%;
+    background:var(--paper-dim);
+    border:2px solid var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; flex-shrink:0;
+  }
+  .customer-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem; color:var(--ink);}
+  .customer-role{font-size:0.72rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em;}
+  .speech{
+    font-size:0.95rem;
+    line-height:1.5;
+    padding:12px 0;
+    border-top:1px dashed var(--ink-soft);
+    border-bottom:1px dashed var(--ink-soft);
+  }
+  .ticket-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:6px 0; font-size:0.9rem;
+  }
+  .ticket-row .label{color:var(--ink-soft);}
+  .ticket-row .value{font-weight:600;}
+  .price-row{font-size:1.3rem; font-weight:700; padding-top:10px;}
+  .paid-block{margin-top:14px; padding-top:10px; border-top:1px dashed var(--ink-soft);}
+  .paid-label{font-size:0.72rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;}
+  .paid-note-row{display:flex; align-items:center; gap:10px;}
+  .prankster-note{font-size:0.76rem; font-style:italic; color:var(--ink-soft); margin-top:6px;}
+
+  /* ---------- Chips (banknotes & coins) ---------- */
+  .chip{
+    border:none; cursor:pointer; color:#fff;
+    font-family:'IBM Plex Mono', monospace; font-weight:700;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    line-height:1;
+    box-shadow:0 2px 0 rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.18);
+    transition:transform 0.12s ease, box-shadow 0.12s ease;
+    flex-shrink:0;
+  }
+  .chip:hover{transform:translateY(-3px);}
+  .chip:active{transform:translateY(0) scale(0.94);}
+  .chip .u{font-size:0.55em; opacity:0.85; margin-top:1px;}
+  .chip.note{
+    border-radius:6px;
+    height:50px;
+    font-size:1rem;
+  }
+  .chip.coin{border-radius:50%; color:var(--ink);}
+  .chip.coin.dark-text{color:var(--ink);}
+  .chip.coin.light-text{color:#fff8e8;}
+
+  button.chip{padding:0;}
+
+  /* ---------- Drawer (till) ---------- */
+  .drawer{
+    background:linear-gradient(180deg, var(--wood-light), var(--wood));
+    border:1px solid rgba(201,162,75,0.35);
+    border-radius:var(--radius-lg);
+    padding:18px 20px 20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  }
+  .drawer-title{color:var(--cream); font-size:1.15rem; font-weight:600;}
+  .drawer-hint{color:var(--muted); font-size:0.82rem; margin-top:2px; margin-bottom:14px;}
+  .drawer-row{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:linear-gradient(180deg, var(--felt), var(--felt-deep));
+    border-radius:var(--radius-md);
+    padding:12px;
+    margin-bottom:10px;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,0.35);
+  }
+  .drawer-row:last-child{margin-bottom:0;}
+
+  /* ---------- Tray ---------- */
+  .tray-panel{
+    background:var(--wood);
+    border:1px solid rgba(201,162,75,0.35);
+    border-radius:var(--radius-lg);
+    padding:18px 20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  }
+  .tray-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+  .tray-head h2{font-size:1.15rem; color:var(--cream); font-weight:600;}
+  .link-btn{
+    background:none; border:none; color:var(--brass-bright);
+    text-decoration:underline; cursor:pointer; font-size:0.82rem; padding:2px;
+  }
+  .link-btn:hover{color:var(--cream);}
+  .tray-list{min-height:44px; display:flex; flex-direction:column; gap:6px; margin-bottom:12px;}
+  .tray-empty{color:var(--muted); font-size:0.85rem; font-style:italic; padding:10px 2px;}
+  .tray-item{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(0,0,0,0.2);
+    border-radius:var(--radius-sm);
+    padding:6px 10px;
+  }
+  .tray-item .mini-chip{width:30px; height:30px; border-radius:50%; flex-shrink:0;}
+  .tray-item .mini-chip.note{width:44px; height:26px; border-radius:4px;}
+  .tray-item .tray-label{flex:1; font-size:0.88rem; color:var(--cream);}
+  .tray-item .tray-count{font-family:'IBM Plex Mono',monospace; color:var(--brass-bright); font-weight:600;}
+  .tray-item .tray-sub{font-family:'IBM Plex Mono',monospace; color:var(--muted); font-size:0.82rem; min-width:64px; text-align:right;}
+  .tray-item button.minus{
+    background:rgba(224,112,90,0.18); color:var(--bad);
+    border:1px solid rgba(224,112,90,0.4); border-radius:50%;
+    width:24px; height:24px; cursor:pointer; font-weight:700; line-height:1;
+  }
+  .tray-item button.minus:hover{background:rgba(224,112,90,0.32);}
+
+  .tray-total{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-top:1px solid rgba(201,162,75,0.3);
+    padding-top:12px; margin-bottom:14px;
+  }
+  .tray-total span{color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em;}
+  .tray-total strong{font-family:'IBM Plex Mono',monospace; font-size:1.4rem; color:var(--cream);}
+
+  .tray-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{
+    border-radius:999px; padding:11px 20px; font-weight:600; font-size:0.92rem;
+    cursor:pointer; border:1px solid transparent; transition:transform 0.1s ease, filter 0.1s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:active{transform:scale(0.97);}
+  .btn.primary{background:var(--brass); color:var(--wood-dark); flex:1; min-width:160px;}
+  .btn.ghost{background:transparent; border-color:rgba(201,162,75,0.5); color:var(--muted);}
+  .btn.ghost:hover{color:var(--cream); border-color:var(--brass-bright);}
+  .btn:disabled{opacity:0.4; cursor:not-allowed; filter:none; transform:none;}
+  .btn.next{background:var(--felt); color:var(--cream); border-color:rgba(201,162,75,0.4);}
+
+  /* ---------- Feedback ---------- */
+  .feedback{
+    grid-column:1 / -1;
+    background:var(--wood);
+    border:1px solid rgba(201,162,75,0.35);
+    border-radius:var(--radius-lg);
+    padding:22px 24px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .feedback[hidden]{display:none;}
+  .verdict-row{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+  .stamp{
+    font-family:'Fraunces', serif; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.04em; font-size:1.3rem;
+    border:3px solid currentColor; border-radius:10px;
+    padding:8px 18px; transform:rotate(-4deg);
+    animation:stampIn 0.4s ease-out;
+    white-space:nowrap;
+  }
+  .stamp.perfect{color:var(--ok);}
+  .stamp.okay{color:var(--warn);}
+  .stamp.wrong{color:var(--bad);}
+  .stamp.assisted{color:var(--muted);}
+  .verdict-detail{color:var(--cream); font-size:0.95rem; line-height:1.5;}
+  .verdict-detail .num{color:var(--brass-bright);}
+  .points-badge{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:1rem;
+    color:var(--wood-dark); background:var(--brass-bright);
+    padding:5px 12px; border-radius:999px;
+  }
+  .compare{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
+  @media (max-width:560px){ .compare{grid-template-columns:1fr;} }
+  .compare-col{
+    background:rgba(0,0,0,0.2); border-radius:var(--radius-md); padding:12px 14px;
+  }
+  .compare-col h3{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:600; margin-bottom:6px;}
+  .compare-col p{font-family:'IBM Plex Mono',monospace; font-size:0.9rem; color:var(--cream); line-height:1.6;}
+
+  /* ---------- Footer ---------- */
+  .footnote{
+    color:var(--muted); font-size:0.82rem; line-height:1.6;
+    border-top:1px solid rgba(201,162,75,0.25); padding-top:16px;
+    max-width:70ch;
+  }
+
+  @keyframes slideIn{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes stampIn{
+    0%{opacity:0; transform:scale(1.5) rotate(-14deg);}
+    60%{opacity:1; transform:scale(0.94) rotate(-2deg);}
+    100%{opacity:1; transform:scale(1) rotate(-4deg);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+
+<div class="stage">
+  <header class="masthead">
+    <div class="brand">
+      <span class="brand-mark">€</span>
+      <div>
+        <h1>Resto Perfetto</h1>
+        <p class="tagline">Allenati a dare il resto giusto usando le vere monete e banconote in euro.</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <dl class="stats" id="stats" style="margin:0;">
+        <div><dt>Clienti</dt><dd id="stat-served">0</dd></div>
+        <div><dt>Perfetti</dt><dd id="stat-perfect">0</dd></div>
+        <div><dt>Serie</dt><dd id="stat-streak">0</dd></div>
+        <div><dt>Record</dt><dd id="stat-best">0</dd></div>
+        <div><dt>Punti</dt><dd id="stat-score">0</dd></div>
+      </dl>
+      <button class="reset-link" id="reset-btn" type="button">Azzera</button>
+    </div>
+  </header>
+
+  <main class="counter">
+    <section class="ticket" id="ticket" aria-live="polite"></section>
+
+    <div style="display:flex; flex-direction:column; gap:22px;">
+      <section class="drawer">
+        <h2 class="drawer-title">Il cassetto della cassa</h2>
+        <p class="drawer-hint">Clicca le banconote e le monete da dare al cliente.</p>
+        <div class="drawer-row" id="notes-row"></div>
+        <div class="drawer-row" id="coins-row"></div>
+      </section>
+
+      <section class="tray-panel">
+        <div class="tray-head">
+          <h2>Il resto che stai dando</h2>
+          <button class="link-btn" id="clear-btn" type="button">Svuota</button>
+        </div>
+        <div class="tray-list" id="tray-list">
+          <p class="tray-empty" id="tray-empty">Non hai ancora selezionato nulla.</p>
+        </div>
+        <div class="tray-total">
+          <span>Totale dato</span>
+          <strong id="tray-total-value" class="num">0,00 €</strong>
+        </div>
+        <div class="tray-actions">
+          <button class="btn ghost" id="reveal-btn" type="button">Mostra soluzione (0 punti)</button>
+          <button class="btn primary" id="confirm-btn" type="button">Conferma resto</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="feedback" id="feedback" hidden></section>
+  </main>
+
+  <footer class="footnote">
+    💡 <strong style="color:var(--cream);">Lo sapevi?</strong> Dal 2018, in Italia, i pagamenti in contanti si arrotondano per legge al 5 centesimo più vicino: per questo, in questo gioco, ogni prezzo — e ogni resto — è sempre un multiplo di 5 centesimi, proprio come alla cassa vera. Le monete da 1 e 2 centesimi restano a corso legale, ma di fatto non servono quasi più.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Data ----------
+  var DENOMS = [
+    {v:10000, type:'note', big:'100', unit:'€', size:96, bg:'var(--note100)', word:'banconota da cento euro'},
+    {v:5000,  type:'note', big:'50',  unit:'€', size:90, bg:'var(--note50)',  word:'banconota da cinquanta euro'},
+    {v:2000,  type:'note', big:'20',  unit:'€', size:84, bg:'var(--note20)',  word:'banconota da venti euro'},
+    {v:1000,  type:'note', big:'10',  unit:'€', size:78, bg:'var(--note10)',  word:'banconota da dieci euro'},
+    {v:500,   type:'note', big:'5',   unit:'€', size:72, bg:'var(--note5)',   word:'banconota da cinque euro'},
+    {v:200,   type:'coin', big:'2',   unit:'€', size:44, special:'coin2', word:'moneta da due euro'},
+    {v:100,   type:'coin', big:'1',   unit:'€', size:42, special:'coin1', word:'moneta da un euro'},
+    {v:50,    type:'coin', big:'50',  unit:'c', size:40, bg:'var(--gold)', textDark:true, word:'moneta da cinquanta centesimi'},
+    {v:20,    type:'coin', big:'20',  unit:'c', size:38, bg:'var(--gold)', textDark:true, word:'moneta da venti centesimi'},
+    {v:10,    type:'coin', big:'10',  unit:'c', size:35, bg:'var(--gold)', textDark:true, word:'moneta da dieci centesimi'},
+    {v:5,     type:'coin', big:'5',   unit:'c', size:32, bg:'var(--copper)', word:'moneta da cinque centesimi'}
+  ];
+  function findDenom(v){ for (var i=0;i<DENOMS.length;i++){ if (DENOMS[i].v===v) return DENOMS[i]; } return null; }
+
+  var AVATARS = ['👨','👩','🧑','👴','👵','🧔','🧑‍🦱','🧑‍🦰','🧓','👨‍🦳','👩‍🦳','🧕','👨‍💼','👩‍💼','🧑‍🎨','👨‍🌾','👩🏻','👨🏽','🧑🏿','👩🏾‍🦰','👨🏻‍🦲','👵🏽','👴🏿','🧑🏻‍🦱'];
+  var NAMES = ['Marco','Giulia','Luca','Francesca','Andrea','Chiara','Matteo','Sara','Davide','Elena',
+    'Alessandro','Martina','Federico','Valentina','Simone','Giorgia','Antonio','Roberta','Paolo','Silvia',
+    'Riccardo','Beatrice','Enzo','Ilaria','Tommaso','Noemi','Nonna Pina','Nonno Aldo','il Signor Rossi',
+    'Zia Carla','una turista in vacanza','un cliente di fretta'];
+
+  var ITEMS = {
+    micro: ['un caffè al banco','un cornetto','una brioche vuota','il giornale','un pacchetto di fazzoletti',
+      'una bottiglietta d’acqua','un biglietto dell’autobus','una spremuta d’arancia',
+      'un francobollo','un pacchetto di gomme','un caffè macchiato','un cono gelato piccolo'],
+    small: ['un panino e una lattina','un pacchetto di sigarette','un aperitivo','un taglio di capelli veloce',
+      'un piatto al self-service','un mazzo di fiori','un tascabile in edicola','una ricarica telefonica',
+      'due biglietti del cinema in offerta','un paio di calzini','un gelato da passeggio grande','un’insalata da asporto'],
+    medium: ['una cena in trattoria','una maglia nuova','un paio di scarpe da ginnastica','una cena per due alla pizzeria',
+      'un piccolo elettrodomestico','una visita specialistica','mezzo pieno di benzina','un regalo di compleanno',
+      'un capo d’abbigliamento','un paio di occhiali da sole'],
+    large: ['la spesa settimanale al supermercato','un vestito elegante','una cena di gala per due',
+      'la riparazione dello smartphone','un pieno di benzina','una notte in hotel','un set di pentole','una bicicletta usata']
+  };
+
+  var TEMPLATES = [
+    'Vorrei {item}, sono {price}.',
+    'Mi dà {item}? Viene {price}.',
+    'Allora... {item}, fa {price} in tutto.',
+    '{item}, grazie. Il totale è {price}.',
+    'Prendo {item}: {price}, giusto?'
+  ];
+
+  // ---------- Helpers ----------
+  function rand(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function pick(arr){ return arr[rand(0, arr.length - 1)]; }
+  function roundTo5(v){ return Math.round(v / 5) * 5; }
+  function euro(cents){
+    var sign = cents < 0 ? '-' : '';
+    var abs = Math.abs(cents);
+    var intPart = Math.floor(abs / 100);
+    var decPart = String(abs % 100).padStart(2, '0');
+    return sign + intPart + ',' + decPart + ' €';
+  }
+
+  function randomPriceCents(){
+    var r = Math.random();
+    var min, max;
+    if (r < 0.35){ min = 50; max = 495; }
+    else if (r < 0.65){ min = 500; max = 1995; }
+    else if (r < 0.85){ min = 2000; max = 4995; }
+    else { min = 5000; max = 9500; }
+    return roundTo5(rand(min, max));
+  }
+  function tierForPrice(c){
+    if (c < 500) return 'micro';
+    if (c < 2000) return 'small';
+    if (c < 5000) return 'medium';
+    return 'large';
+  }
+
+  function pickPayment(priceCents){
+    var viable = DENOMS.filter(function(d){ return d.v >= priceCents; })
+                        .sort(function(a,b){ return a.v - b.v; });
+    if (viable.length === 0) return DENOMS[0];
+    if (Math.random() < 0.08){
+      var big = viable.filter(function(d){ return d.v === 5000 || d.v === 10000; });
+      if (big.length) return pick(big);
+    }
+    var weights = viable.map(function(_, i){ return 1 / Math.pow(i + 1, 1.6); });
+    var total = weights.reduce(function(a,b){ return a+b; }, 0);
+    var r = Math.random() * total;
+    for (var i = 0; i < viable.length; i++){
+      r -= weights[i];
+      if (r <= 0) return viable[i];
+    }
+    return viable[viable.length - 1];
+  }
+
+  function optimalBreakdown(amountCents){
+    var remaining = amountCents;
+    var result = [];
+    for (var i = 0; i < DENOMS.length; i++){
+      var d = DENOMS[i];
+      if (remaining <= 0) break;
+      var count = Math.floor(remaining / d.v);
+      if (count > 0){
+        result.push({ denom: d, count: count });
+        remaining -= count * d.v;
+      }
+    }
+    return result;
+  }
+  function piecesOf(list){ return list.reduce(function(s,o){ return s + o.count; }, 0); }
+  function breakdownText(list){
+    if (!list.length) return 'nessuna moneta o banconota';
+    return list.map(function(o){ return o.count + '× ' + denomLabel(o.denom); }).join(' + ');
+  }
+  function denomLabel(d){ return d.big + ' ' + d.unit; }
+
+  // ---------- Chip rendering ----------
+  function chipStyleAttr(d){
+    if (d.special === 'coin1'){
+      return 'background:radial-gradient(circle at 50% 45%, var(--silver) 0 52%, var(--gold) 53% 100%); color:var(--ink);';
+    }
+    if (d.special === 'coin2'){
+      return 'background:radial-gradient(circle at 50% 45%, var(--gold) 0 52%, var(--silver) 53% 100%); color:var(--ink);';
+    }
+    var color = d.textDark ? 'var(--ink)' : '#fff8ec';
+    return 'background:' + d.bg + '; color:' + color + ';';
+  }
+  function chipHTML(d, opts){
+    opts = opts || {};
+    var sizeStyle, shapeClass;
+    if (d.type === 'note'){
+      shapeClass = 'note';
+      sizeStyle = 'width:' + d.size + 'px; height:50px;';
+    } else {
+      shapeClass = 'coin';
+      sizeStyle = 'width:' + d.size + 'px; height:' + d.size + 'px;';
+    }
+    var textClass = (d.type === 'coin' && !d.textDark && !d.special) ? 'light-text' : 'dark-text';
+    var cls = 'chip ' + shapeClass + (d.type === 'coin' ? ' ' + textClass : '');
+    var tag = opts.button ? 'button' : 'div';
+    var extra = opts.button ? ' type="button" data-value="' + d.v + '" aria-label="Aggiungi ' + d.word + '"' : ' aria-hidden="true"';
+    return '<' + tag + ' class="' + cls + '"' + extra + ' style="' + sizeStyle + ' ' + chipStyleAttr(d) + '">' +
+      '<span>' + d.big + '</span><span class="u">' + d.unit + '</span>' +
+      '</' + tag + '>';
+  }
+  function miniChipHTML(d){
+    var shapeClass = d.type === 'note' ? 'note' : '';
+    return '<span class="mini-chip ' + shapeClass + '" style="' + chipStyleAttr(d) + '"></span>';
+  }
+
+  // ---------- State ----------
+  var state = {
+    customer: null,
+    tray: {},
+    served: 0, perfect: 0, okay: 0, wrong: 0, assisted: 0,
+    streak: 0, bestStreak: 0, score: 0,
+    resolved: false
+  };
+
+  function loadProgress(){
+    try {
+      var raw = localStorage.getItem('restoPerfetto_v1');
+      if (raw){
+        var d = JSON.parse(raw);
+        state.bestStreak = d.bestStreak || 0;
+        state.score = d.score || 0;
+        state.served = d.served || 0;
+        state.perfect = d.perfect || 0;
+      }
+    } catch(e){ /* localStorage not available: continue without persistence */ }
+  }
+  function saveProgress(){
+    try {
+      localStorage.setItem('restoPerfetto_v1', JSON.stringify({
+        bestStreak: state.bestStreak, score: state.score, served: state.served, perfect: state.perfect
+      }));
+    } catch(e){ /* ignore */ }
+  }
+
+  // ---------- Customer generation ----------
+  function newCustomer(){
+    var priceCents = randomPriceCents();
+    var tier = tierForPrice(priceCents);
+    var item = pick(ITEMS[tier]);
+    var payment = pickPayment(priceCents);
+    var template = pick(TEMPLATES);
+    var speech = template.replace('{item}', item).replace('{price}', euro(priceCents));
+    var isPrankster = payment.v >= 5000 && (payment.v - priceCents) > 2000;
+
+    state.customer = {
+      name: pick(NAMES),
+      avatar: pick(AVATARS),
+      item: item,
+      priceCents: priceCents,
+      paymentCents: payment.v,
+      paymentDenom: payment,
+      speech: speech,
+      prankster: isPrankster
+    };
+    state.tray = {};
+    state.resolved = false;
+    renderTicket();
+    renderTray();
+    document.getElementById('feedback').hidden = true;
+    document.getElementById('confirm-btn').disabled = false;
+    document.getElementById('reveal-btn').disabled = false;
+  }
+
+  function renderTicket(){
+    var c = state.customer;
+    var html = '';
+    html += '<div class="ticket-head">';
+    html += '<div class="avatar">' + c.avatar + '</div>';
+    html += '<div><div class="customer-name">' + c.name + '</div><div class="customer-role">Cliente</div></div>';
+    html += '</div>';
+    html += '<p class="speech">“' + c.speech + '”</p>';
+    html += '<div class="ticket-row price-row"><span class="label">Totale</span><span class="value num">' + euro(c.priceCents) + '</span></div>';
+    html += '<div class="paid-block">';
+    html += '<div class="paid-label">Paga con</div>';
+    html += '<div class="paid-note-row">' + chipHTML(c.paymentDenom, {button:false}) + '<span class="num" style="font-size:1.1rem; font-weight:700;">' + euro(c.paymentCents) + '</span></div>';
+    if (c.prankster){
+      html += '<p class="prankster-note">— è l’unica che ha nel portafoglio, dice scusandosi.</p>';
+    }
+    html += '</div>';
+    document.getElementById('ticket').innerHTML = html;
+  }
+
+  // ---------- Till ----------
+  function renderTill(){
+    var notesRow = document.getElementById('notes-row');
+    var coinsRow = document.getElementById('coins-row');
+    var notesHTML = '', coinsHTML = '';
+    DENOMS.forEach(function(d){
+      var html = chipHTML(d, {button:true});
+      if (d.type === 'note') notesHTML += html; else coinsHTML += html;
+    });
+    notesRow.innerHTML = notesHTML;
+    coinsRow.innerHTML = coinsHTML;
+    notesRow.addEventListener('click', onChipClick);
+    coinsRow.addEventListener('click', onChipClick);
+  }
+  function onChipClick(e){
+    var btn = e.target.closest('button.chip');
+    if (!btn || state.resolved) return;
+    var v = parseInt(btn.getAttribute('data-value'), 10);
+    addToTray(v);
+  }
+
+  // ---------- Tray ----------
+  function addToTray(v){
+    state.tray[v] = (state.tray[v] || 0) + 1;
+    renderTray();
+  }
+  function removeFromTray(v){
+    if (!state.tray[v]) return;
+    state.tray[v] -= 1;
+    if (state.tray[v] <= 0) delete state.tray[v];
+    renderTray();
+  }
+  function clearTray(){
+    state.tray = {};
+    renderTray();
+  }
+  function trayEntries(){
+    return DENOMS
+      .filter(function(d){ return state.tray[d.v] > 0; })
+      .map(function(d){ return { denom: d, count: state.tray[d.v] }; });
+  }
+  function trayTotal(){
+    var t = 0;
+    Object.keys(state.tray).forEach(function(v){ t += parseInt(v, 10) * state.tray[v]; });
+    return t;
+  }
+  function trayPieceCount(){
+    var t = 0;
+    Object.keys(state.tray).forEach(function(v){ t += state.tray[v]; });
+    return t;
+  }
+  function renderTray(){
+    var list = document.getElementById('tray-list');
+    var entries = trayEntries();
+    if (!entries.length){
+      list.innerHTML = '<p class="tray-empty" id="tray-empty">Non hai ancora selezionato nulla.</p>';
+    } else {
+      var html = '';
+      entries.forEach(function(e){
+        html += '<div class="tray-item">' +
+          miniChipHTML(e.denom) +
+          '<span class="tray-label">' + denomLabel(e.denom) + '</span>' +
+          '<span class="tray-count num">×' + e.count + '</span>' +
+          '<span class="tray-sub num">' + euro(e.denom.v * e.count) + '</span>' +
+          '<button class="minus" type="button" data-value="' + e.denom.v + '" aria-label="Togli una ' + e.denom.word + '">−</button>' +
+          '</div>';
+      });
+      list.innerHTML = html;
+      list.querySelectorAll('button.minus').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (state.resolved) return;
+          removeFromTray(parseInt(btn.getAttribute('data-value'), 10));
+        });
+      });
+    }
+    document.getElementById('tray-total-value').textContent = euro(trayTotal());
+  }
+
+  // ---------- Stats ----------
+  function renderStats(){
+    document.getElementById('stat-served').textContent = state.served;
+    document.getElementById('stat-perfect').textContent = state.perfect;
+    document.getElementById('stat-streak').textContent = state.streak;
+    document.getElementById('stat-best').textContent = state.bestStreak;
+    document.getElementById('stat-score').textContent = state.score;
+  }
+
+  // ---------- Submit / Reveal ----------
+  function submit(){
+    if (!state.customer || state.resolved) return;
+    var target = state.customer.paymentCents - state.customer.priceCents;
+    var given = trayTotal();
+    var optimal = optimalBreakdown(target);
+    var optimalPieces = piecesOf(optimal);
+    var givenPieces = trayPieceCount();
+    var yours = trayEntries().map(function(e){ return { denom: e.denom, count: e.count }; });
+
+    state.served++;
+    state.resolved = true;
+
+    var type, points;
+    if (given !== target){
+      type = 'wrong'; state.wrong++; state.streak = 0; points = 0;
+    } else if (givenPieces === optimalPieces){
+      type = 'perfect'; state.perfect++; state.streak++; points = 10 + Math.min(state.streak - 1, 5) * 2;
+      if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+    } else {
+      type = 'okay'; state.okay++; state.streak = 0; points = 4;
+    }
+    state.score += points;
+    saveProgress();
+    renderFeedback(type, { target: target, given: given, optimal: optimal, optimalPieces: optimalPieces, yours: yours, givenPieces: givenPieces, points: points });
+    renderStats();
+    document.getElementById('confirm-btn').disabled = true;
+    document.getElementById('reveal-btn').disabled = true;
+  }
+
+  function reveal(){
+    if (!state.customer || state.resolved) return;
+    var target = state.customer.paymentCents - state.customer.priceCents;
+    var optimal = optimalBreakdown(target);
+    var optimalPieces = piecesOf(optimal);
+
+    state.served++;
+    state.assisted++;
+    state.streak = 0;
+    state.resolved = true;
+    saveProgress();
+    renderFeedback('assisted', { target: target, optimal: optimal, optimalPieces: optimalPieces });
+    renderStats();
+    document.getElementById('confirm-btn').disabled = true;
+    document.getElementById('reveal-btn').disabled = true;
+  }
+
+  function renderFeedback(type, data){
+    var panel = document.getElementById('feedback');
+    var stampText, verdictLine, pointsHTML;
+    var compareHTML = '';
+
+    if (type === 'perfect'){
+      stampText = 'Perfetto!';
+      verdictLine = data.target === 0
+        ? 'Nessun resto era dovuto, e infatti non hai dato nulla: esatto.'
+        : 'Hai dato esattamente <span class="num">' + euro(data.given) + '</span> con il minor numero possibile di pezzi (' + data.givenPieces + ').';
+      pointsHTML = '<span class="points-badge">+' + data.points + ' punti</span>';
+    } else if (type === 'okay'){
+      stampText = 'Corretto, non ottimale';
+      verdictLine = 'Il resto è esatto (<span class="num">' + euro(data.given) + '</span>), ma hai usato ' + data.givenPieces + ' pezzi invece dei ' + data.optimalPieces + ' minimi possibili.';
+      pointsHTML = '<span class="points-badge">+' + data.points + ' punti</span>';
+      compareHTML = '<div class="compare">' +
+        '<div class="compare-col"><h3>Il tuo resto</h3><p>' + breakdownText(data.yours) + '</p></div>' +
+        '<div class="compare-col"><h3>Combinazione ottimale</h3><p>' + breakdownText(data.optimal) + '</p></div>' +
+        '</div>';
+    } else if (type === 'wrong'){
+      stampText = 'Sbagliato';
+      var diff = data.given - data.target;
+      var diffText = diff > 0 ? 'ne hai dato ' + euro(diff) + ' in più' : 'te ne mancano ' + euro(-diff);
+      verdictLine = 'Il resto dovuto era <span class="num">' + euro(data.target) + '</span>, tu hai dato <span class="num">' + euro(data.given) + '</span>: ' + diffText + '.';
+      pointsHTML = '<span class="points-badge" style="background:var(--bad); color:#fff;">+0 punti</span>';
+      compareHTML = '<div class="compare">' +
+        '<div class="compare-col"><h3>Il tuo resto</h3><p>' + breakdownText(data.yours) + '</p></div>' +
+        '<div class="compare-col"><h3>Resto corretto</h3><p>' + breakdownText(data.optimal) + '</p></div>' +
+        '</div>';
+    } else {
+      stampText = 'Soluzione mostrata';
+      verdictLine = data.target === 0
+        ? 'In questo caso non era dovuto nessun resto.'
+        : 'Il resto dovuto era <span class="num">' + euro(data.target) + '</span>, da dare con il minor numero di pezzi possibile.';
+      pointsHTML = '<span class="points-badge" style="background:var(--wood-light); color:var(--muted);">+0 punti</span>';
+      compareHTML = '<div class="compare">' +
+        '<div class="compare-col" style="grid-column:1/-1;"><h3>Combinazione ottimale (' + data.optimalPieces + ' pezzi)</h3><p>' + breakdownText(data.optimal) + '</p></div>' +
+        '</div>';
+    }
+
+    var html = '';
+    html += '<div class="verdict-row"><span class="stamp ' + type + '">' + stampText + '</span>' + pointsHTML + '</div>';
+    html += '<p class="verdict-detail">' + verdictLine + '</p>';
+    html += compareHTML;
+    html += '<button class="btn next" id="next-btn" type="button">Prossimo cliente →</button>';
+    panel.innerHTML = html;
+    panel.hidden = false;
+    document.getElementById('next-btn').addEventListener('click', newCustomer);
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ---------- Wire up static controls ----------
+  function init(){
+    loadProgress();
+    renderTill();
+    document.getElementById('clear-btn').addEventListener('click', function(){
+      if (!state.resolved) clearTray();
+    });
+    document.getElementById('confirm-btn').addEventListener('click', submit);
+    document.getElementById('reveal-btn').addEventListener('click', reveal);
+    document.getElementById('reset-btn').addEventListener('click', function(){
+      state.served = 0; state.perfect = 0; state.okay = 0; state.wrong = 0; state.assisted = 0;
+      state.streak = 0; state.bestStreak = 0; state.score = 0;
+      saveProgress();
+      renderStats();
+    });
+    newCustomer();
+    renderStats();
+  }
+  init();
+})();
+</script>
