@@ -1,8 +1,6 @@
-# 💶 Resto Perfetto
+#  Resto Perfetto
 
 Una piccola web app per allenarsi a dare il resto giusto, usando le vere monete e banconote in euro che si usano in Italia.
-
-**Demo:** https://ke-jac-10.github.io/rest/
 
 ## Come funziona
 
@@ -25,23 +23,3 @@ C'è anche un pulsante "Mostra soluzione" per chi resta bloccato, e un punteggio
 - Interfaccia responsive, pensata anche per l'uso da smartphone.
 - Nessuna dipendenza esterna a parte i font (Google Fonts): un solo file HTML autosufficiente.
 
-## Uso in locale
-
-Non serve alcuna build o server: basta clonare il repository e aprire `index.html` in un browser.
-
-```
-git clone https://github.com/ke-jac-10/rest.git
-cd rest
-```
-
-Poi apri semplicemente il file `index.html` con doppio click, oppure trascinalo in una finestra del browser.
-
-## Struttura del progetto
-
-```
-index.html   — l'intera web app: markup, stile e logica di gioco in un unico file
-```
-
-## Pubblicazione
-
-Il sito è pubblicato con GitHub Pages direttamente dal branch `main` (cartella `/`). Ogni push su `main` aggiorna automaticamente la versione online in pochi minuti.
